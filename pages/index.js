@@ -4,8 +4,8 @@ import Nav from "../Components/Nav";
 import Results from "../Components/Results";
 import requests from "../Utils/requests";
 
-export default function Home(props) {
-  console.log(props);
+export default function Home({ results }) {
+  // console.log(results);
   return (
     <div>
       <Head>
@@ -18,24 +18,24 @@ export default function Home(props) {
       </Head>
       <Header />
       <Nav />
-      <Results />
+      <Results results={results} />
     </div>
   );
 }
 
 export async function getServerSideProps(context) {
   const genre = context.query.genre;
-  console.log(genre);
   const request = await fetch(
     `https://api.themoviedb.org/3${
       requests[genre]?.url || requests.fetchTrending.url
     } `
-  );
-  console.log(`https://api.themoviedb.org/3${
-    requests[genre]?.url || requests.fetchTrending.url
-  } `);
-  const data = await request.json();
-  if (!data) {
+  ).then((res) => res.json());
+  // console.log(
+  //   `https://api.themoviedb.org/3${
+  //     requests[genre]?.url || requests.fetchTrending.url
+  //   } `
+  // );
+  if (!request) {
     return {
       redirect: {
         destination: "/",
@@ -44,6 +44,6 @@ export async function getServerSideProps(context) {
     };
   }
   return {
-    props: { data },
+    props: { results: request.results },
   };
 }
