@@ -4,5 +4,4 @@
     "eslint:recommended",
     "plugin:import/recommended"
   ],
-  "import/no-anonymous-default-export": [2, { "allowObject": true }]
 }
